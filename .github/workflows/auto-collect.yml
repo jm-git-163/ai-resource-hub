@@ -1,0 +1,41 @@
+name: "\uD83D\uDD04 자동 리소스 수집"
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'   # 매주 월요일 새벽 3시 (UTC, KST 12시)
+  workflow_dispatch:        # 수동 실행도 가능
+
+permissions:
+  contents: write
+
+jobs:
+  collect-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Collect Resources
+        run: python scripts/collector.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Manage Freshness
+        run: python scripts/freshness_manager.py
+
+      - name: Commit & Push
+        run: |
+          git config user.name "AI Resource Bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/resources.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🔄 자동 리소스 업데이트 $(date +%Y-%m-%d)"
+            git push
+          fi
