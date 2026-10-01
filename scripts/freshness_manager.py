@@ -18,10 +18,11 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(SCRIPT_DIR, '..', 'data', 'resources.json')
 
 # 신선도 점수 임계값
-THRESHOLD_REMOVE = 15    # 이 점수 미만: 자동 제거
+THRESHOLD_REMOVE = 20    # 이 점수 미만: 자동 제거
 THRESHOLD_STALE = 30     # 이 점수 미만: "오래된 자료" 태그
 THRESHOLD_FRESH = 70     # 이 점수 이상: "신선한 자료" 뱃지
 NEW_DAYS = 30            # 첫 수집 후 이 기간 내: "NEW" 뱃지
+MAX_AGE_DAYS = 90        # 90일(3개월) 초과 비큐레이션 리소스 폐기
 
 def calculate_freshness(resource):
     """리소스의 신선도 점수를 계산합니다 (0~100)"""
@@ -99,8 +100,33 @@ def manage_freshness(data):
     resources = data.get('resources', [])
     now_str = datetime.now(timezone.utc).strftime('%Y-%m-%d')
 
+    now = datetime.now(timezone.utc)
+
     print("🧹 신선도 관리 시작...")
     print(f"   총 리소스: {len(resources)}개")
+
+    # 90일 경과 리소스 사전 필터링 (큐레이션 리소스는 제외)
+    aged_out = 0
+    filtered_resources = []
+    for r in resources:
+        if r.get('platform') == 'curated':
+            filtered_resources.append(r)
+            continue
+
+        updated_str = r.get('updated_at', '')
+        try:
+            if 'T' in updated_str:
+                updated = datetime.fromisoformat(updated_str.replace('Z', '+00:00'))
+            else:
+                updated = datetime.strptime(updated_str, '%Y-%m-%d').replace(tzinfo=timezone.utc)
+        except (ValueError, TypeError):
+            updated = now - timedelta(days=365)
+
+        if (now - updated).days > MAX_AGE_DAYS:
+            aged_out += 1
+            continue
+
+        filtered_resources.append(r)
 
     removed = []
     stale_count = 0
@@ -109,7 +135,7 @@ def manage_freshness(data):
 
     updated_resources = []
 
-    for r in resources:
+    for r in filtered_resources:
         # first_seen 필드가 없으면 현재 날짜로 설정
         if 'first_seen' not in r:
             r['first_seen'] = r.get('updated_at', now_str)
@@ -149,7 +175,8 @@ def manage_freshness(data):
     print(f"   🔥 NEW (30일 이내):  {new_count}개")
     print(f"   🌿 신선 (70점 이상):  {fresh_count}개")
     print(f"   ⚠️ 오래됨 (30점 미만): {stale_count}개")
-    print(f"   ❌ 자동 폐기 (15점 미만): {len(removed)}개")
+    print(f"   ⏰ 기간 만료 ({MAX_AGE_DAYS}일 초과): {aged_out}개")
+    print(f"   ❌ 자동 폐기 ({THRESHOLD_REMOVE}점 미만): {len(removed)}개")
     print(f"   ─────────────────────")
     print(f"   📦 최종 유지: {len(updated_resources)}개")
 
