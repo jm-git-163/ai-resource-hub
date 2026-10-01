@@ -173,10 +173,11 @@ window.selectCategory = function(category) {
 
     // Guide text
     const guideEl = document.getElementById('category-guide');
-    if (guideEl) {
+    const guideText = document.getElementById('guide-text');
+    if (guideEl && guideText) {
         if (category !== 'all' && categories[category]) {
-            guideEl.textContent = categories[category].guide;
-            guideEl.style.display = 'block';
+            guideText.textContent = categories[category].guide;
+            guideEl.style.display = 'flex';
         } else {
             guideEl.style.display = 'none';
         }
@@ -208,7 +209,9 @@ function saveFavorites() {
 
 function updateResultCount(count) {
     const el = document.getElementById('total-count');
-    if (el) el.textContent = formatNumber(count);
+    if (el) el.textContent = formatNumber(allResources.length);
+    const resultEl = document.getElementById('result-count');
+    if (resultEl) resultEl.textContent = `결과: ${count}개`;
 }
 
 // Render Functions

@@ -335,7 +335,14 @@ def get_curated_resources():
         {"category": "contest", "title": "AI Hub 공모전", "url": "https://aihub.or.kr", "description": "한국 AI Hub - AI 관련 공모전 및 데이터셋.", "description_kr": "🇰🇷 국내 | 한국 정부 AI 공모전, 한국어 데이터셋 제공", "stars": 95000, "tags": ["competition", "korean", "government"], "license": "N/A"},
         {"category": "contest", "title": "DACON", "url": "https://dacon.io", "description": "한국 AI 경진대회 플랫폼.", "description_kr": "🇰🇷 국내 | 한국판 Kaggle, 기업 연계 AI 대회", "stars": 94000, "tags": ["competition", "korean", "ai"], "license": "N/A"},
         {"category": "contest", "title": "Devpost", "url": "https://devpost.com", "description": "Online hackathons & software competitions.", "description_kr": "🌍 누구나 참가 | 글로벌 해커톤 플랫폼, AI 트랙 다수", "stars": 90000, "tags": ["hackathon", "competition"], "license": "N/A"},
-        {"category": "contest", "title": "공모전 대외활동 올콘", "url": "https://all-con.co.kr", "description": "국내 공모전·대외활동 종합 플랫폼.", "description_kr": "🇰🇷 국내 | 디자인·영상·AI 공모전 통합 검색", "stars": 88000, "tags": ["competition", "korean", "design"], "license": "N/A"}
+        {"category": "contest", "title": "공모전 대외활동 올콘", "url": "https://all-con.co.kr", "description": "국내 공모전·대외활동 종합 플랫폼.", "description_kr": "🇰🇷 국내 | 디자인·영상·AI 공모전 통합 검색", "stars": 88000, "tags": ["competition", "korean", "design"], "license": "N/A"},
+
+        # SKILL - skills.sh Top Agent Skills (https://www.skills.sh)
+        {"category": "skill", "title": "Skills.sh - AI 에이전트 스킬 디렉토리", "url": "https://www.skills.sh", "description": "The Open Agent Skills Ecosystem - discover and install skills for AI agents.", "description_kr": "🔧 대신 해주는 일: 에이전트 스킬 검색·설치 (npx skills add)", "stars": 99000, "tags": ["skills", "agent", "directory", "vercel"], "license": "Free"},
+        {"category": "skill", "title": "find-skills (Vercel)", "url": "https://www.skills.sh/vercel-labs/skills/find-skills", "description": "Find and install agent skills. 3.6M installs, #1 on skills.sh.", "description_kr": "🔧 대신 해주는 일: AI 에이전트에게 스킬 검색·설치 능력 부여", "stars": 98000, "tags": ["skills", "agent", "vercel", "npx"], "license": "MIT"},
+        {"category": "skill", "title": "grill-me (Matt Pocock)", "url": "https://www.skills.sh/mattpocock/skills/grill-me", "description": "Interactive interview skill for agents. 1.3M installs.", "description_kr": "🔧 대신 해주는 일: 인터뷰 기반 요구사항 정리, 계획 수립 보조", "stars": 97000, "tags": ["interview", "planning", "agent"], "license": "MIT"},
+        {"category": "skill", "title": "agent-browser (Vercel)", "url": "https://www.skills.sh/vercel-labs/agent-browser/agent-browser", "description": "Web browsing skill for AI agents. 980K installs.", "description_kr": "🔧 대신 해주는 일: AI가 직접 웹 브라우징·정보 수집", "stars": 96000, "tags": ["browser", "web", "agent"], "license": "MIT"},
+        {"category": "skill", "title": "frontend-design (Anthropic)", "url": "https://www.skills.sh/anthropics/skills/frontend-design", "description": "Frontend design skill by Anthropic for Claude.", "description_kr": "🔧 대신 해주는 일: 프론트엔드 UI 디자인·구현 자동화", "stars": 95000, "tags": ["frontend", "design", "claude", "anthropic"], "license": "MIT"}
     ]
     
     for i, item in enumerate(curated):
