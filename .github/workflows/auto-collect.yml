@@ -1,8 +1,6 @@
 name: "\uD83D\uDD04 자동 리소스 수집"
 
 on:
-  schedule:
-    - cron: '0 3 * * 1'   # 매주 월요일 새벽 3시 (UTC, KST 12시)
   workflow_dispatch:        # 수동 실행도 가능
 
 permissions:
